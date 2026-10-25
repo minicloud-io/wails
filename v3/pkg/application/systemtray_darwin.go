@@ -217,6 +217,11 @@ func (s *macosSystemTray) run() {
 
 func (s *macosSystemTray) setIcon(icon []byte) {
 	s.icon = icon
+	// A plain icon is not a template, even after SetTemplateIcon was used:
+	// apps that switch between a template (monochrome) and a colour icon,
+	// e.g. by connection state, would otherwise get the colour icon
+	// rendered as a silhouette.
+	s.isTemplateIcon = false
 	globalApplication.dispatchOnMainThread(func() {
 		s.nsImage = unsafe.Pointer(C.imageFromBytes((*C.uchar)(&icon[0]), C.int(len(icon))))
 		C.systemTraySetIcon(s.nsStatusItem, s.nsImage, C.int(s.iconPosition), C.bool(s.isTemplateIcon))

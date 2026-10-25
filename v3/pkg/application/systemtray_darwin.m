@@ -174,9 +174,7 @@ void systemTraySetIcon(void* nsStatusItem, void* nsImage, int position, bool isT
 		NSStatusBar *statusBar = [NSStatusBar systemStatusBar];
 		CGFloat thickness = [statusBar thickness];
 		[image setSize:NSMakeSize(thickness, thickness)];
-		if( isTemplate ) {
-			[image setTemplate:YES];
-		}
+		[image setTemplate:isTemplate];
 		statusItem.button.image = [image autorelease];
 		statusItem.button.imagePosition = position;
 	});
